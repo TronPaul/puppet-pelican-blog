@@ -26,11 +26,19 @@ class pelican-blog ($user, $blog_name, $git_repo = undef) {
     require => Exec['inve']
   }
 
+  vcsrepo {"/home/${user}/blog-env/pelican-themes":
+    ensure => present,
+    provider => git,
+    source => 'https://github.com/getpelican/pelican-themes.git',
+    user => $user
+  }
+
   if $git_repo {
     vcsrepo {"/home/${user}/blog-env/blog":
       ensure => present,
       provider => git,
-      source => 'https://github.com/TronPaul/unpro-blog.git'
+      source => 'https://github.com/TronPaul/unpro-blog.git',
+      user => $user
     }
   } else {
     file {"/home/${user}/blog-env/${blog_name}":
